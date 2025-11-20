@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>你的名字 — 个人主页模板</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <header class="container site-header">
+      <a class="brand" href="#hero">
+        <img src="/assets/img/logo.png" alt="头像" onerror="this.style.display='none'">
+        <div>
+          <div class="site-title">你的名字</div>
+          <div class="site-tag">创作者 / 音乐人 / 开发者</div>
+        </div>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#about">关于</a>
+        <a href="#works">作品</a>
+        <a href="#music">音乐</a>
+        <a href="#contact">联系</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section id="hero" class="hero">
+        <div class="hero-card">
+          <h1>你好，我是 <strong>你的名字</strong></h1>
+          <p class="muted">我是一个喜欢把声音和代码结合在一起的创作者。欢迎来到我的个人主页。</p>
+          <p style="margin-top:1rem;"><a class="nav" href="#works">查看作品集</a></p>
+        </div>
+        <aside class="hero-card center">
+          <img src="/assets/img/avatar.jpg" alt="头像" style="width:120px;height:120px;border-radius:50%;object-fit:cover;margin:0 auto 0.7rem;" onerror="this.style.display='none'">
+          <div class="muted">最新单曲</div>
+          <div class="player" style="margin-top:.6rem;">
+            <button id="play-btn">播放</button>
+            <div class="progress" style="margin:0 .5rem;flex:1"><i id="progress-bar"></i></div>
+            <button class="secondary" id="mute-btn">静音</button>
+          </div>
+        </aside>
+      </section>
+
+      <section id="about" class="hero-card" style="margin-bottom:1rem;">
+        <h2>关于我</h2>
+        <p>在这里写一句简短的自我介绍，说明你的专业、创作方向、联系方式或一句座右铭。</p>
+      </section>
+
+      <section id="works">
+        <h2>作品集</h2>
+        <div class="grid">
+          <article class="card">
+            <img src="/assets/img/project1.jpg" alt="项目图">
+            <div class="card-body">
+              <h3 class="card-title">作品名称 1</h3>
+              <div class="card-meta muted">2025 · 项目类型</div>
+              <p class="muted">一两句描述你的作品亮点或创作背景。</p>
+            </div>
+          </article>
+          <article class="card">
+            <img src="/assets/img/project2.jpg" alt="项目图">
+            <div class="card-body">
+              <h3 class="card-title">作品名称 2</h3>
+              <div class="card-meta muted">2024 · 视觉 / 音频</div>
+              <p class="muted">简短说明，吸引访客点击或试听。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="music" class="hero-card" style="margin-top:1rem;">
+        <h2>音乐</h2>
+        <div class="stack">
+          <div class="row">
+            <div style="flex:1">
+              <strong>单曲：示例曲目</strong>
+              <div class="muted">专辑 / 单曲 · 3:42</div>
+            </div>
+            <div>
+              <button class="nav" onclick="alert('播放示例 - 在 JSON 中配置音源以启用')">试听</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="hero-card" style="margin-top:1rem;">
+        <h2>联系我</h2>
+        <form id="contact-form">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input name="name" placeholder="你的名字" style="flex:1;padding:.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+            <input name="email" placeholder="邮箱" style="flex:1;padding:.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)">
+          </div>
+          <textarea name="message" placeholder="你的消息" style="width:100%;margin-top:.6rem;padding:.6rem;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--text)"></textarea>
+          <div style="margin-top:.6rem"><button type="submit">发送</button></div>
+        </form>
+      </section>
+
+      <footer class="site-footer center muted">
+        <div>© 你的名字 · <a href="mailto:you@example.com">you@example.com</a></div>
+      </footer>
+    </main>
+
+    <script>
+      // 简单的本地播放器示例（如需启用，请把 audioSrc 改为你的音频 URL）
+      (function(){
+        const audio = new Audio();
+        // 示例音源（可替换为你的文件或托管链接）
+        const audioSrc = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+        if(audioSrc) audio.src = audioSrc;
+        const playBtn = document.getElementById('play-btn');
+        const muteBtn = document.getElementById('mute-btn');
+        const progressBar = document.getElementById('progress-bar');
+        let playing = false;
+        playBtn.addEventListener('click', ()=>{
+          if(!audio.src){ alert('未配置音源。编辑 index.html 的 audioSrc 变量以启用。'); return; }
+          if(playing) audio.pause(); else audio.play();
+        });
+        audio.addEventListener('play', ()=>{ playing=true; playBtn.textContent='暂停'; });
+        audio.addEventListener('pause', ()=>{ playing=false; playBtn.textContent='播放'; });
+        audio.addEventListener('timeupdate', ()=>{ const pct = audio.duration ? (audio.currentTime/audio.duration*100):0; progressBar.style.width = pct + '%'; });
+        muteBtn.addEventListener('click', ()=>{ audio.muted = !audio.muted; muteBtn.textContent = audio.muted ? '取消静音' : '静音'; });
+
+        // 表单示例：本地阻止提交并显示提示
+        const form = document.getElementById('contact-form');
+        form.addEventListener('submit', (e)=>{
+          e.preventDefault();
+          alert('表单已提交（示例）。请连接后端或使用 mailto: 来接收消息。');
+        });
+      })();
+    </script>
+  </body>
+</html>
